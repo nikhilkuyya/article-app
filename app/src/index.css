@@ -1,0 +1,11 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+#root {
+  margin-inline: auto;
+  margin-block: 0;
+  width: 600px;
+}
