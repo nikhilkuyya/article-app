@@ -1,0 +1,31 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+#root {
+  margin-inline: auto;
+  margin-block: 0;
+  width: 600px;
+}
+
+.vt {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hf {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.logout {
+  height: max-content;
+}
+
+.nav-li li {
+  list-style: none;
+}

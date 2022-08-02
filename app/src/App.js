@@ -1,19 +1,40 @@
 import { render } from "react-dom";
-import { StrictMode } from "react";
+import { StrictMode, useContext } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { Home } from "./Home";
+import AuthRoute from "./components/AuthRoute";
+import { Home } from "./pages/Home";
+import "./index.css";
+import Login from "./pages/Login";
+
+import { AuthProvider } from "./context/AuthProvider";
+import { FetchProvider } from "./context/FetchProvider";
+import Welcome from "./pages/Welcome";
+import Header from "./components/Header";
+import Register from "./pages/Register";
 
 const App = () => {
   return (
     <StrictMode>
-      <BrowserRouter>
-        <header>
-          <Link to="/">Articles !</Link>
-        </header>
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <FetchProvider>
+          <BrowserRouter>
+            <Header />
+            <Routes>
+              <Route path="/" element={<Welcome />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route
+                path="/home"
+                element={
+                  <AuthRoute>
+                    <Home />
+                  </AuthRoute>
+                }
+              />
+            </Routes>
+          </BrowserRouter>
+        </FetchProvider>
+      </AuthProvider>
     </StrictMode>
   );
 };
