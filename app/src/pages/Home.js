@@ -30,21 +30,24 @@ export const Home = () => {
 
       {articles.map((article) => {
         return (
-          <article key={article._id} className="vt">
-            <header className="hf">
-              <h5>{article.title}</h5>
-              <div>
-                {userId === article?.createdBy ? (
-                  <Link to={`/article/${article._id}`} state={article}>
-                    Edit
-                  </Link>
-                ) : (
-                  <button type="button">Like</button>
-                )}
-              </div>
-            </header>
-            <p>{article.description}</p>
-          </article>
+          <div key={article._id}>
+            <article key={article._id} className="vt">
+              <header className="hf">
+                <h5>{article.title}</h5>
+                <div>
+                  {userId === article?.createdBy ? (
+                    <Link to={`/article/${article._id}`} state={article}>
+                      Edit
+                    </Link>
+                  ) : (
+                    <button type="button">Like</button>
+                  )}
+                </div>
+              </header>
+              <p>{article.description}</p>
+            </article>
+            <hr />
+          </div>
         );
       })}
     </>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 
 const Header = () => {
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  const { isAuthenticated, logout, authState } = useContext(AuthContext);
   const link = isAuthenticated ? "home" : "login";
 
   return (
@@ -12,10 +12,13 @@ const Header = () => {
         <h1>Articles !</h1>
       </Link>
       {isAuthenticated ? (
-        <button type="button" onClick={logout} className="logout">
-          {" "}
-          Logut
-        </button>
+        <>
+          <span> {authState?.userInfo?.name?.toUpperCase()}</span>
+          <button type="button" onClick={logout} className="logout">
+            {" "}
+            Logut
+          </button>
+        </>
       ) : (
         <ul className="hf nav-li">
           <li>

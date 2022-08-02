@@ -22,8 +22,10 @@ export async function registerUser(req, res) {
     const user = await createUser.save();
     const token = createToken(user._id);
     const jwtResponse = jwtDecode(token);
+    const cleanUserData = delete user.password;
+
     res.status(200).send({
-      userInfo: user,
+      userInfo: cleanUserData,
       token,
       expiresAt: jwtResponse.exp,
     });
@@ -45,8 +47,9 @@ export async function loginUser(req, res) {
     }
     const token = createToken(user._id);
     const jwtResponse = jwtDecode(token);
+    const cleanUserData = delete user.password;
     return res.status(200).send({
-      userInfo: user,
+      userInfo: cleanUserData,
       token,
       expiresAt: jwtResponse.exp,
     });
