@@ -7,6 +7,7 @@ import { connect } from "./connect";
 
 import userRouter from "./resources/user/user.router";
 import articleRouter from "./resources/article/article.router";
+import likeRouter from "./resources/like/like.router";
 import { protect } from "./utils";
 
 const app = express();
@@ -22,6 +23,7 @@ app.get("/test", (req, res) => {
 
 app.use("/user", userRouter);
 app.use("/api/article", protect, articleRouter);
+app.use("/api/like", protect, likeRouter);
 
 export const start = async () => {
   await connect();

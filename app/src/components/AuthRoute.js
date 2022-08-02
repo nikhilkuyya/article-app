@@ -4,7 +4,6 @@ import { AuthContext } from "../context/AuthProvider";
 
 const AuthRoute = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);
-  console.log("isAuthenticated", isAuthenticated);
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }

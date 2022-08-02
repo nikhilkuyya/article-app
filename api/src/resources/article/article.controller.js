@@ -40,8 +40,8 @@ export const updateArticle = async (req, res) => {
       title: updateArticleDetails.title || article.title,
       description: updateArticleDetails.description || article.description,
     };
-    await Article.updateOne(payLoad).exec();
-    res.status(204).send({ message: "updated article" });
+    await Article.findByIdAndUpdate(id, payLoad);
+    res.status(200).send({ message: "updated article" });
   } catch (err) {
     res.status(500).send({ message: err.message });
   }

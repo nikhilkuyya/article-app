@@ -41,9 +41,7 @@ export async function checkPassword(password, savedPassword) {
 
 export function verifyToken(token) {
   return new Promise((resolve, reject) => {
-    console.log("token", token, "secret", process.env.JWT_SECRET);
     jwt.verify(token.trim(), process.env.JWT_SECRET, (err, payload) => {
-      console.log("callback", err, payload);
       if (err) {
         reject(err);
       } else {
@@ -57,11 +55,9 @@ export async function protect(req, res, next) {
   try {
     const headers = JSON.parse(JSON.stringify(req.headers));
     const authorizationToken = headers.authorization;
-    console.log("autorizationToken", authorizationToken);
     const tokenPayload =
       checkFormatToken(authorizationToken) &&
       (await verifyToken(getToken(authorizationToken)));
-    console.log("payload", tokenPayload);
     if (!tokenPayload) {
       return res.status(401).send({ message: "invalid token" });
     }

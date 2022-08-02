@@ -8,17 +8,91 @@ export const Home = () => {
   const userId = authState.userInfo._id;
   const { authAxios } = useContext(FetchContext);
   const [articles, setArticles] = useState([]);
+  const [statusList, setStatusList] = useState([]);
+  const [articleLike, setTriggerArticleLike] = useState({
+    articleId: null,
+    status: false,
+  });
+
+  useEffect(() => {
+    async function getStatus(articles) {
+      const query = articles.reduce((acc, id, index, list) => {
+        const join = index == 0 ? "?" : index < list.length ? "&" : "";
+        return `${acc}${join}article=${id}`;
+      }, "");
+      return await authAxios.get(`/api/like${query}`);
+    }
+    if (articles.length > 0) {
+      getStatus(articles.map(({ _id }) => _id))
+        .then((likes) => {
+          setStatusList(likes);
+        })
+        .catch((err) => {
+          setStatusList([]);
+          console.log(err);
+        });
+    } else {
+      setStatusList([]);
+    }
+  }, [articles]);
+
   useEffect(() => {
     authAxios
       .get("/api/article")
-      .then((articles) => {
-        setArticles(articles);
+      .then((data) => {
+        setArticles(data);
+        return data;
       })
       .catch((err) => {
         setArticles([]);
+        console.log(err);
       });
   }, []);
-  console.log("data", userId, articles);
+
+  function getLikeStatus(articleId) {
+    const statusObject = statusList.find(({ articleId: aId }) => {
+      return aId == articleId;
+    });
+    return statusObject ? statusObject?.status : false;
+  }
+
+  useEffect(() => {
+    async function modifyStatus(data) {
+      await authAxios.put(`/api/like/${data.id}`, {
+        id: data.id,
+        article: data.article,
+        status: data.status,
+      });
+    }
+    async function createStatus(data) {
+      await authAxios.post(`/api/like`, {
+        article: data.article,
+        status: data.status,
+      });
+    }
+
+    if (articleLike && articleLike.articleId) {
+      const likeData = statusList.find(
+        (statusItem) => statusItem.articleId === articleLike.articleId
+      );
+      if (likeData && likeData._id) {
+        modifyStatus({
+          id: likeData._id,
+          article: articleLike.articleId,
+          status: articleLike.status,
+        }).then(() => {
+          setArticles(articles.map((d) => d));
+        });
+      } else {
+        createStatus({
+          article: articleLike.articleId,
+          status: articleLike.status,
+        }).then(() => {
+          setArticles(articles.map((d) => d));
+        });
+      }
+    }
+  }, [articleLike]);
   return (
     <>
       <div className="hf">
@@ -40,7 +114,19 @@ export const Home = () => {
                       Edit
                     </Link>
                   ) : (
-                    <button type="button">Like</button>
+                    <button
+                      type="button"
+                      data-value={getLikeStatus(article._id)}
+                      onClick={(evt) => {
+                        const status = evt.target.dataset.value == "true";
+                        setTriggerArticleLike({
+                          articleId: article._id,
+                          status: !status,
+                        });
+                      }}
+                    >
+                      {getLikeStatus(article._id) ? "UnLike" : "Like"}
+                    </button>
                   )}
                 </div>
               </header>
