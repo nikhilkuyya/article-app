@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
 
   const [authState, setAuthState] = useState(() => {
     return {
-      userInfo: sessionStorage.getItem("userInfo") || {},
+      userInfo: JSON.parse(sessionStorage.getItem("userInfo")) || {},
       token: sessionStorage.getItem("token") || "",
       expiresAt: sessionStorage.getItem("expiresAt") || null,
     };

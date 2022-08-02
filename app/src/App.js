@@ -11,6 +11,7 @@ import { FetchProvider } from "./context/FetchProvider";
 import Welcome from "./pages/Welcome";
 import Header from "./components/Header";
 import Register from "./pages/Register";
+import Article from "./pages/Article";
 
 const App = () => {
   return (
@@ -28,6 +29,22 @@ const App = () => {
                 element={
                   <AuthRoute>
                     <Home />
+                  </AuthRoute>
+                }
+              />
+              <Route
+                path="/article/new"
+                element={
+                  <AuthRoute>
+                    <Article heading="Create" />
+                  </AuthRoute>
+                }
+              />
+              <Route
+                path="/article/:id"
+                element={
+                  <AuthRoute>
+                    <Article heading="Edit" />
                   </AuthRoute>
                 }
               />

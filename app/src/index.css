@@ -13,6 +13,7 @@
 .vt {
   display: flex;
   flex-direction: column;
+  gap: 2em;
   justify-content: space-between;
 }
 
@@ -20,6 +21,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  gap: 2em;
 }
 
 .logout {

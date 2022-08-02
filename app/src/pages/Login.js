@@ -4,7 +4,6 @@ import { AuthContext } from "../context/AuthProvider";
 import { publicFetch } from "../utils";
 
 const Login = () => {
-  const navigate = useNavigate();
   const { setAuthState } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +27,10 @@ const Login = () => {
           .then(() => {
             setLoginStatus(isSubmit);
           })
-          .catch(console.error);
+          .catch((e) => {
+            console.error(e);
+            setSubmit(false);
+          });
       }
     } catch (err) {
       console.error(err);
